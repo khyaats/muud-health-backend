@@ -1,124 +1,149 @@
-````markdown
-# MUUD Health – Community Wellness App (Backend)
+```markdown
+# MUUD Health – Backend
 
-This repository contains the backend implementation of two core modules from the MUUD Health MVP:
-- **Journaling functionality**
-- **Contact management system**
+This is the backend implementation for the MUUD Health MVP challenge, covering two core modules:
 
-Built using **Node.js**, **Express**, and **PostgreSQL**, this backend supports journaling and contact data storage and retrieval through RESTful APIs.
+- 🧘 Journaling Functionality
+- 📇 Contact Management System
 
----
-
-## 📦 Technologies Used
-
-- Node.js
-- Express
-- PostgreSQL
-- pg (node-postgres)
-- dotenv (for environment variable management)
-- CORS middleware
+Built using:
+- **Node.js** + **Express.js**
+- **PostgreSQL** for data storage
+- Hosted on **Render**
 
 ---
 
-## 🚀 Features
+## 📦 Tech Stack
 
-### 📓 Journal Module
-
-- **POST /journal/entry**  
-  Accepts: `user_id`, `entry_text`, `mood_rating` (1–5), `timestamp`  
-  Stores a journal entry
-
-- **GET /journal/user/:id**  
-  Retrieves all journal entries for a specific user
-
-### 📇 Contact Module
-
-- **POST /contacts/add**  
-  Accepts: `user_id`, `contact_name`, `contact_email`, `contact_phone`  
-  Stores a new contact
-
-- **GET /contacts/user/:id**  
-  Retrieves all contacts for a specific user
+- **Backend**: Node.js + Express
+- **Database**: PostgreSQL
+- **Hosting**: Render.com
+- **Environment Variables**: via `.env` file
 
 ---
 
-## 🛠 Local Setup Instructions
+## 📁 Project Structure
 
-### ✅ Clone and Install
+```
 
-```bash
-git clone https://github.com/khyaats/muud-health-backend.git
-cd muud-health-backend
-npm install
+muud\_backend/
+├── controllers/
+│   ├── journalController.js
+│   └── contactsController.js
+├── routes/
+│   ├── journal.js
+│   └── contacts.js
+├── db.js
+├── index.js
+├── .env
+├── package.json
+└── README.md
+
 ````
 
-### ⚙️ Environment Variables
+---
 
-Create a `.env` file in the root:
+## 🚀 API Endpoints
 
-```env
+### 📘 Journaling
+
+#### POST `/journal/entry`
+Create a new journal entry.
+
+**Body:**
+```json
+{
+  "user_id": 1,
+  "entry_text": "Feeling great today!",
+  "mood_rating": 4,
+  "timestamp": "2025-05-29T12:00:00Z"
+}
+````
+
+#### GET `/journal/user/:id`
+
+Get all journal entries for a given `user_id`.
+
+---
+
+### 📇 Contacts
+
+#### POST `/contacts/add`
+
+Add a new contact.
+
+**Body:**
+
+```json
+{
+  "user_id": 1,
+  "contact_name": "John Doe",
+  "contact_email": "john@example.com",
+  "contact_phone": "1234567890"
+}
+```
+
+#### GET `/contacts/user/:id`
+
+Get all contacts for a given `user_id`.
+
+---
+
+## 🔐 Environment Setup
+
+Create a `.env` file:
+
+```
 PORT=3000
-DATABASE_URL=postgres://youruser:yourpass@localhost:5432/muud_db
+DB_HOST=<your-db-host>
+DB_PORT=5432
+DB_NAME=muud_db
+DB_USER=<your-db-user>
+DB_PASSWORD=<your-db-password>
 ```
 
-### 🧱 Database Setup
+---
 
-Run the following SQL to set up required tables:
+## 🧪 Local Development
 
-```sql
-CREATE TABLE journal_entries (
-  id SERIAL PRIMARY KEY,
-  user_id INTEGER NOT NULL,
-  entry_text TEXT NOT NULL,
-  mood_rating INTEGER CHECK (mood_rating >= 1 AND mood_rating <= 5),
-  timestamp TIMESTAMP NOT NULL
-);
+1. Clone the repo
+   `git clone https://github.com/khyaats/muud-health-backend.git`
 
-CREATE TABLE contacts (
-  id SERIAL PRIMARY KEY,
-  user_id INTEGER NOT NULL,
-  contact_name TEXT NOT NULL,
-  contact_email TEXT NOT NULL,
-  contact_phone TEXT NOT NULL,
-  created_at TIMESTAMP DEFAULT now()
-);
-```
+2. Install dependencies
+   `npm install`
 
-### ▶️ Start the Server
+3. Start the server
+   `npm start`
+
+Make sure your PostgreSQL database is running and accessible via `.env` credentials.
+
+---
+
+## 🌐 Live Deployment
+
+Backend is deployed at:
+👉 **[https://muud-health-backend.onrender.com](https://muud-health-backend.onrender.com)**
+
+Example test:
 
 ```bash
-npm start
+curl -X POST https://muud-health-backend.onrender.com/journal/entry \
+  -H "Content-Type: application/json" \
+  -d '{"user_id":1,"entry_text":"Test from curl","mood_rating":3,"timestamp":"2025-05-29T14:00:00Z"}'
 ```
 
-Server will run at: `http://localhost:3000`
-
 ---
 
-## 📬 API Reference
+## 📝 Notes
 
-### Journaling
-
-| Method | Endpoint            | Description                     |
-| ------ | ------------------- | ------------------------------- |
-| POST   | `/journal/entry`    | Create a new journal entry      |
-| GET    | `/journal/user/:id` | Get all journal entries by user |
-
-### Contacts
-
-| Method | Endpoint             | Description             |
-| ------ | -------------------- | ----------------------- |
-| POST   | `/contacts/add`      | Add a new contact       |
-| GET    | `/contacts/user/:id` | Get contacts for a user |
-
----
-
-## 🧑‍💻 Author
-
-Built for the **MUUD Health Developer Coding Challenge**
-GitHub: [@khyaats](https://github.com/khyaats)
+* Validate mood\_rating (1–5)
+* Ensure correct email format and 10-digit phone numbers in `/contacts/add`
+* Deployed using `Render.com`
+* Currently supports **single user** (`user_id = 1`); can be extended to JWT-auth in future
 
 ---
 
 ## 📄 License
 
-MIT
+ISC © 2025 MUUD Health
+
