@@ -6,6 +6,8 @@ const {
   getContactsByUser
 } = require('../controllers/contactsController');
 
+const validateContact = require('../middleware/validateContact');
+
 // New route per spec
 router.post('/add', addContact);
 
